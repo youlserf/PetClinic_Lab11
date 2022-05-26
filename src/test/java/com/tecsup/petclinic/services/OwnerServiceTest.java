@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.tecsup.petclinic.entities.Owner;
-import com.tecsup.petclinic.entities.Pet;
+
 import com.tecsup.petclinic.exception.OwnerNotFoundException;
-import com.tecsup.petclinic.exception.PetNotFoundException;
+
 
 @SpringBootTest
 public class OwnerServiceTest {
@@ -66,6 +66,51 @@ public class OwnerServiceTest {
 		List<Owner> owners = ownerService.findByTelephone(FIND_TELEPHONE);
 
 		assertThat(owners.size(), is(SIZE_EXPECTED));
+	}
+	@Test
+	public void testUpdateOwnerPet() {
+		
+		String OWNER_NAME ="Maria";
+		String OWNER_LASTNAME="Escobito";
+		String ADDRESS = "345 Maple St.";
+		String CITY= "Madison";
+		String TELEPHONE= "6085557683";
+		long create_id = -1;
+		
+		String UP_OWNER_NAME ="Chris";
+		String UP_OWNER_LASTNAME="Jhonson";
+		String UP_ADDRESS = "350 Maple St.";
+		String UP_CITY= "Monona";
+		String UP_TELEPHONE= "6085557143";
+		
+		Owner owner = new Owner(OWNER_NAME, OWNER_LASTNAME, ADDRESS, CITY, TELEPHONE);
+
+		logger.info(">"+owner);
+		Owner ownerCreated = ownerService.create(owner);
+		logger.info(">>"+ownerCreated);
+		
+		create_id = ownerCreated.getId();
+		
+		
+		ownerCreated.setFirstName(UP_OWNER_NAME);
+		ownerCreated.setLastName(UP_OWNER_LASTNAME);
+		ownerCreated.setAddress(UP_ADDRESS);
+		ownerCreated.setCity(UP_CITY);
+		ownerCreated.setTelephone(UP_TELEPHONE);
+		
+		
+		Owner upgradeOwner = ownerService.update(ownerCreated);
+		logger.info(">>>>" + upgradeOwner);
+		
+		assertThat(create_id, notNullValue());
+		assertThat(upgradeOwner.getId(), is(create_id));
+		assertThat(upgradeOwner.getFirstName(), is(UP_OWNER_NAME));
+		assertThat(upgradeOwner.getLastName(), is(UP_OWNER_LASTNAME));
+		assertThat(upgradeOwner.getAddress(), is(UP_ADDRESS));
+		assertThat(upgradeOwner.getCity(), is(UP_CITY));
+		assertThat(upgradeOwner.getTelephone(), is(UP_TELEPHONE));
+		
+		
 	}
 
 }
