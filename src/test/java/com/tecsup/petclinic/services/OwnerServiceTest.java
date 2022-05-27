@@ -62,8 +62,6 @@ public class OwnerServiceTest {
 
 		String FIND_TELEPHONE = "6085551023";
 		int SIZE_EXPECTED = 1;
-		
-		
 
 		List<Owner> owners = ownerService.findByTelephone(FIND_TELEPHONE);
 
