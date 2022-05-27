@@ -3,6 +3,7 @@ package com.tecsup.petclinic.services;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
 
@@ -112,5 +113,32 @@ public class OwnerServiceTest {
 		
 		
 	}
+	@Test
+    public void testDeleteOwner() {
+
+        String OWNER_NAME = "Luis";
+        String OWNER_LAST_NAME = "Jr";
+        String OWNER_ADDRESS = "Av. Los incas 1130";
+        String OWNER_CITY = "Lima Cercado";
+        String OWNER_TELEPHONE = "981545182";
+
+        Owner owner = new Owner(OWNER_NAME, OWNER_LAST_NAME, OWNER_ADDRESS, OWNER_CITY, OWNER_TELEPHONE);
+        owner = ownerService.create(owner);
+        logger.info("" + owner);
+
+        try {
+            ownerService.delete(owner.getId());
+        } catch (OwnerNotFoundException e) {
+            fail(e.getMessage());
+        }
+            
+        try {
+            ownerService.findById(owner.getId());
+            fail("Owner id = " + owner.getId() + "has not delete");
+        } catch (OwnerNotFoundException e) {
+            assertThat(true, is(true));
+        }                 
+
+    }
 
 }
